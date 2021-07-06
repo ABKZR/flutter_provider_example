@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_practice/controller/cart_controller.dart';
 import 'package:provider_practice/model/product_data.dart';
+import 'package:provider_practice/screens/cart_screen.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
   var product = ProductData();
 
   var cartController = CartController();
@@ -55,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () {
                                     Provider.of<CartController>(context,
                                             listen: false)
-                                        .addToCart(product.products[index]);
+                                        .addProduct(product.products[index]);
                                   },
                                   child: Text('Add to Cart')),
                             ],
@@ -63,16 +59,15 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     })),
-            Consumer<CartController>(builder: (context, data, child) {
-              return Text('Total Rs. ${data.totalPrice.toStringAsFixed(0)}',style: TextStyle(color: Colors.white,fontSize: 30),);
-            }),
-            SizedBox( height: 100),
+          
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.amberAccent,
-        onPressed: (){}, label: Consumer<CartController>(
+        onPressed: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CartPage()));
+        }, label: Consumer<CartController>(
           builder: (context,data,child){
             return  Text(data.count.toString()); 
           })
